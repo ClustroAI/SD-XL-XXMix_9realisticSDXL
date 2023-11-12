@@ -15,11 +15,17 @@ base.safety_checker = None
 #base.unet = torch.compile(base.unet, mode="reduce-overhead", fullgraph=True)
 
 def invoke(input_text):
-    input_json = json.loads(input_text)
-    prompt = input_json['prompt']
-    negative_prompt = input_json['negative_prompt'] if 'negative_prompt' in input_json else ""
-    steps = int(input_json['steps']) if 'steps' in input_json else 30
-    guidance_scale  = int(input_json['guidance_scale']) if 'guidance_scale' in input_json else 8
+    try:
+        input_json = json.loads(input_text)
+        prompt = input_json['prompt']
+        negative_prompt = input_json.get('negative_prompt', "")
+        steps = int(input_json.get('steps', 30))
+        guidance_scale = int(input_json.get('guidance_scale', 8))
+    except:
+        prompt = input_text + " (SimplepositiveXLv1:0.7)"
+        negative_prompt = ""
+        steps = 30
+        guidance_scale = 8
     
     negative_prompt_template = f'''(worst quality, low quality, illustration, 3d, 2d, 
                             painting, cartoons, sketch), tooth, open mouth, three fingers, four fingers, {negative_prompt}'''
@@ -29,7 +35,7 @@ def invoke(input_text):
         #prompt_2=prompt_2, 
         negative_prompt=negative_prompt_template,
         #negative_prompt_2=negative_prompt_2,
-        height=1280,
+        height=1000,
         width=768,
         num_inference_steps=steps,
         guidance_scale=guidance_scale,
