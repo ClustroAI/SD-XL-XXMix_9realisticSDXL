@@ -10,7 +10,7 @@ model = hf_hub_download(
 )
 base = StableDiffusionXLPipeline.from_single_file(
     model,
-    torch_dtype=torch.float16,
+    dtype=torch.float16,
     variant="fp16",
     use_safetensors=True
 ).to("cuda")
