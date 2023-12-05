@@ -3,7 +3,11 @@ from huggingface_hub import hf_hub_download
 from diffusers import StableDiffusionXLPipeline
 import torch
 
-model = hf_hub_download(repo_id="Remilistrasza/XXMix_9realisticSDXL", filename="xxmix9realisticsdxl_v10.safetensors")
+model = hf_hub_download(
+    repo_id="Remilistrasza/XXMix_9realisticSDXL", 
+    filename="xxmix9realisticsdxl_v10.safetensors", 
+    revision="41e7c1aa4e871961f7188b431a6e8218adbced6b"
+)
 base = StableDiffusionXLPipeline.from_single_file(
     model,
     torch_dtype=torch.float16,
